@@ -140,7 +140,6 @@ const items = ref([
   { title: 'Home', icon: 'mdi-home-account', path: '/', color: "warning" },
   { title: 'Math', icon: 'mdi-calculator-variant', path: '/basicMath', color: "warning" },
   { title: 'String App', icon: 'mdi-message-processing', path: '/stringApp', color: "warning" },
-  { title: 'Quiz', icon: 'mdi-book-open', path: '/axios', color: "warning" },
   { title: 'Quiz', icon: 'mdi-book-open', path: '/quiz', color: 'warning' },
 ])
 
