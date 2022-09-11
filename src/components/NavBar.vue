@@ -112,21 +112,24 @@
     </v-toolbar>
 
     <v-navigation-drawer style="color:aqua" expand-on-hover rail>
-      <v-list>
-        <v-list-item
-          prepend-avatar="https://scontent.fmnl9-2.fna.fbcdn.net/v/t39.30808-6/285904537_7617205418351303_7735473882644039146_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHIPWzc2HNBuCxZ_399GXGH6z0lwVrMu6jrPSXBWsy7qOOsr-UohG1aT3CRSwR8RgrBD_momtxa5k7KNDeMuZUX&_nc_ohc=9NWPJI7Hv10AX-ZN3cR&tn=Ov07vvXkhUqrdXVp&_nc_ht=scontent.fmnl9-2.fna&oh=00_AT_Th6xyVZi6u5NkwkFXpaKRbcBiNFRaQ62J-AXon6nA5w&oe=631B0CD9"
-          title="Bon Nel" subtitle="Sheesh"></v-list-item>
-      </v-list>
+      <v-parallax src="https://wallpapers.com/images/file/dark-blue-aesthetic-glowing-triangles-e63gsnm9zakquywb.jpg" class="fill-height">
+        <v-list>
+          <v-list-item
+            prepend-avatar="https://scontent.fmnl9-2.fna.fbcdn.net/v/t39.30808-6/285904537_7617205418351303_7735473882644039146_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHIPWzc2HNBuCxZ_399GXGH6z0lwVrMu6jrPSXBWsy7qOOsr-UohG1aT3CRSwR8RgrBD_momtxa5k7KNDeMuZUX&_nc_ohc=9NWPJI7Hv10AX-ZN3cR&tn=Ov07vvXkhUqrdXVp&_nc_ht=scontent.fmnl9-2.fna&oh=00_AT_Th6xyVZi6u5NkwkFXpaKRbcBiNFRaQ62J-AXon6nA5w&oe=631B0CD9"
+            title="Bon Nel" subtitle="Sheesh"></v-list-item>
+        </v-list>
 
-      <v-divider></v-divider>
+        <v-divider></v-divider>
 
-      <v-list density="compact" app>
-        <v-list-item v-for="item in items" :key="item.title" router :to="item.path" :prepend-icon="item.icon"
-          :color="item.color">
-          <v-list-item-title :color="item.color">{{ item.title }}</v-list-item-title>
+        <v-list density="compact" app>
+          <v-list-item v-for="item in items" :key="item.title" router :to="item.path" :prepend-icon="item.icon"
+            :color="item.color">
+            <v-list-item-title :color="item.color">{{ item.title }}</v-list-item-title>
 
-        </v-list-item>
-      </v-list>
+          </v-list-item>
+        </v-list>
+      </v-parallax>
+
     </v-navigation-drawer>
   </nav>
 </template>
@@ -140,7 +143,10 @@ const items = ref([
   { title: 'Home', icon: 'mdi-home-account', path: '/', color: "warning" },
   { title: 'Math', icon: 'mdi-calculator-variant', path: '/basicMath', color: "warning" },
   { title: 'String App', icon: 'mdi-message-processing', path: '/stringApp', color: "warning" },
+  { title: 'Vuetify', icon: 'mdi-vuetify', path: '/vuetify', color: 'warning' },
   { title: 'Quiz', icon: 'mdi-book-open', path: '/quiz', color: 'warning' },
+  { title: 'Profile', icon: 'mdi-account-multiple', path: '/bonnel', color: 'warning' },
+  { title: 'Website', icon: 'mdi-web', path: '/about', color: 'warning' },
 ])
 
 </script>

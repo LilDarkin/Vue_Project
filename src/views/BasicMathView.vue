@@ -1,33 +1,40 @@
+<script setup>
+  import Image from '../assets/images/math_bg.jpg'
+</script>
+
 <template>
-  <v-card class="mx-auto my-12 pa-3 cardRGB" max-width="500" elevation="8" shaped>
+  <v-parallax :src="Image">
+    <v-card class="mx-auto my-12 pa-3 cardRGB" max-width="500" elevation="8" shaped>
 
-    <v-card-title>Basic Math</v-card-title>
+      <v-card-title>Basic Math</v-card-title>
 
-    <div class="sy-4 text-subtitle">
-      <v-text-field label="Enter first #" v-model.number="fNumber" @change="answer"></v-text-field>
-    </div>
-    <div class="sy-4 text-subtitle">
-      <v-text-field label="Enter second #" v-model.number="sNumber" @change="answer"></v-text-field>
-    </div>
-    <v-divider class="mx-4"></v-divider>
-    <v-card-text>
-      <div class="my-4 text-subtitle-1">
-        Sum: {{ sumT.toFixed(0) }}
+      <div class="sy-4 text-subtitle">
+        <v-text-field label="Enter first #" v-model.number="fNumber" @change="answer"></v-text-field>
       </div>
-      <div class="my-4 text-subtitle-1">
-        Difference: {{ diffT.toFixed(0) }}
+      <div class="sy-4 text-subtitle">
+        <v-text-field label="Enter second #" v-model.number="sNumber" @change="answer"></v-text-field>
       </div>
-      <div class="my-4 text-subtitle-1">
-        Product: {{ prodT.toFixed(0) }}
-      </div>
-      <div class="my-4 text-subtitle-1">
-        Quotient: {{ quoT }}
-      </div>
-      <div class="my-4 text-subtitle-1">
-        Average: {{ avgT.toFixed(0) }}
-      </div>
-    </v-card-text>
-  </v-card>
+      <v-divider class="mx-4"></v-divider>
+      <v-card-text>
+        <div class="my-4 text-subtitle-1">
+          Sum: {{ sumT.toFixed(0) }}
+        </div>
+        <div class="my-4 text-subtitle-1">
+          Difference: {{ diffT.toFixed(0) }}
+        </div>
+        <div class="my-4 text-subtitle-1">
+          Product: {{ prodT.toFixed(0) }}
+        </div>
+        <div class="my-4 text-subtitle-1">
+          Quotient: {{ quoT }}
+        </div>
+        <div class="my-4 text-subtitle-1">
+          Average: {{ avgT.toFixed(0) }}
+        </div>
+      </v-card-text>
+    </v-card>
+  </v-parallax>
+
 
 </template>
 

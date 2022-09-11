@@ -3,6 +3,9 @@ import BasicMathView from "../views/BasicMathView.vue";
 import StringAppView from "../views/StringAppView.vue";
 import HomeView from "../views/DashboardView.vue";
 import QuizView from "../views/QuizView.vue";
+import VuetifyView from "../views/VuetifyView.vue";
+import AboutWebsiteView from "../views/AboutWebsiteView.vue";
+import AboutMeView from "../views/AboutMeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +29,21 @@ const router = createRouter({
       path: "/quiz",
       name: "quiz",
       component: QuizView,
+    },
+    {
+      path: "/vuetify",
+      name: "vuetify",
+      component: VuetifyView,
+    },
+    {
+      path: "/bonnel",
+      name: "bonnel",
+      component: AboutMeView,
+    },
+    {
+      path: "/about",
+      name: "website",
+      component: AboutWebsiteView,
     },
   ],
 });

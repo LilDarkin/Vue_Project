@@ -1,79 +1,103 @@
 <script setup>
-import WelcomeItem from './DashboardItem.vue'
-import SportIcon from './icons/IconSport.vue'
-import AchievementIcon from './icons/IconAchievement.vue'
-import PersonIcon from './icons/IconPerson.vue'
-import SupportIcon from './icons/IconSupport.vue'
-import IconDocumentation from './icons/IconDocumentation.vue'
+import Image from '../assets/images/about.jpg'
+import hWebsite from '../assets/images/h_website.png'
+import hMath from '../assets/images/h_math.png'
+import hString from '../assets/images/h_string.png'
+import hProfile from '../assets/images/h_profile.png'
+import hQuiz from '../assets/images/h_quiz.png'
+import hVuetify from '../assets/images/h_vuetify.png'
 </script>
     
 <template>
-  <v-container>
-    <v-row justify="center">
-      <v-card width="50%">
-        <v-img height="200"
-          src="https://scontent.fmnl9-2.fna.fbcdn.net/v/t1.6435-9/67549929_2946717845400107_2900852531267633152_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=174925&_nc_eui2=AeGQzS5VRne2yD16R71GoVrE27Gixnh56y7bsaLGeHnrLoyAEPX6wdHkkssmHQ5bbGoIyxpgwsk5xuTskqR2Vuu6&_nc_ohc=uyzuUCymMJ4AX_IND5L&_nc_ht=scontent.fmnl9-2.fna&oh=00_AT_O6R6hg8b5hSHigs0cgqrxdy0LdPOnDJTlVnyd48Hcug&oe=6342A565"
-          cover class="text-white">
-        </v-img>
+  <v-parallax :src="Image">
+    <h1 class="pa-4 text-center font-weight-bold">WELCOME</h1>
+    <v-divider></v-divider>
 
-        <v-card-text>
-          <div class="font-weight-bold ml-1 mb-2">
-            About Me
-          </div>
+    <v-container class="pa-4 text-center">
+      <v-row class="fill-height" align="center" justify="center">
+        <template v-for="(item, i) in items" :key="i">
+          <v-col cols="12" md="4">
+            <v-hover v-slot="{ isHovering, props }">
+              <v-card :elevation="isHovering ? 12 : 2" :class="{ 'on-hover': isHovering }" v-bind="props"
+                :to="item.path">
+                <v-img :src="item.img" height="225px" cover>
+                  <v-card-title class="text-h6 d-flex justify-center align-center h-100">
+                    <p class="mt-4">
+                      {{ item.title }}
+                    </p>
+                  </v-card-title>
+                </v-img>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </template>
+      </v-row>
+    </v-container>
 
-          <v-timeline density="compact" truncate-line="none">
-            <v-timeline-item v-for="content in contents" :dot-color="content.color"
-              :icon="content.icon" size="large">
-              <div class="mb-4">
-                <div class="font-weight-normal">
-                  <strong>{{ content.title }}</strong>
-                </div>
-                <div>{{ content.message }}</div>
-              </div>
-            </v-timeline-item>
-          </v-timeline>
-        </v-card-text>
-      </v-card>
-    </v-row>
-  </v-container>
+    <v-divider></v-divider>
+    <h2 class="pa-4 text-center">Click the links above to explore the website.</h2>
+  </v-parallax>
+
 </template>
 
 <script>
 export default {
   data: () => ({
-    contents: [
+    items: [
       {
-        title: 'Introduction',
-        message: `Hi, I am James Bonnel Reyes currently studying at Technological Institute of the Philippines, Manila, taking up
-    Bachelor of Science in Information Technology (BSIT).`,
-        color: 'deep-purple lighten-1',
-        icon: 'mdi-information',
+        title: 'Basic Math',
+        img: hMath,
+        path: '/basicMath',
       },
       {
-        title: 'Sport',
-        message: "My only sport is Badminton but I don't play it much because of School Works and other things.",
-        color: 'deep-purple lighten-1',
-        icon: 'mdi-badminton'
+        title: 'String Manipulator',
+        img: hString,
+        path: '/stringApp',
+
       },
       {
-        title: 'Programming Skill',
-        message: 'My programming skill is more on Mobile Development and Database.',
-        color: 'green',
-        icon: 'mdi-debug-step-over',
+        title: 'About Vuetify',
+        img: hVuetify,
+        path: '/vuetify',
+
       },
       {
-        title: 'Likes',
-        message: 'I like playing games and when I am bored I do programming to learn and improve my skills like logic, etc.',
-        color: 'deep-purple lighten-1',
-        icon: 'mdi-thumb-up'
+        title: 'Quiz',
+        img: hQuiz,
+        path: '/quiz',
+
       },
       {
-        title: 'Achievement',
-        message: "Participated in the HooHacks Hackaton 2021 competition, which was organized by the University of Virginia (UVA),USA, and won second place with my team in the Accessibility and Empowerment Track Prize Category.HooHacks is a team of UVA students who run HooHacks, Virginia's biggest hackathon and one of the 50 biggest collegiate hackathons in the US.",
-        color: 'deep-purple lighten-1',
-        icon: 'mdi-trophy'
+        title: 'About the Developer',
+        img: hProfile,
+        path: '/bonnel',
+
+      },
+      {
+        title: 'About the Website',
+        img: hWebsite,
+        path: '/website',
+
       },
     ],
+    transparent: 'rgba(255, 255, 255, 0)',
   }),
 }
 </script>
+
+<style scoped>
+.v-card {
+  transition: opacity .4s ease-in-out;
+}
+
+.v-card:not(.on-hover) {
+  z-index: 1;
+  opacity: 0.6;
+}
+
+.v-card:is(.on-hover) {
+  z-index: 2;
+  transform: scale(1.2);
+  opacity: 1;
+}
+</style>

@@ -1,97 +1,112 @@
+<script setup>
+import Image from '../assets/images/quiz.jpg'
+</script>
+  
 <template>
-    <v-card class="mx-auto my-12 pa-3" max-width="70%" elevation="8" prepend-icon="mdi-axe" shaped>
+    <v-parallax :src="Image">
+        <v-card class="mx-auto my-12 pa-3" max-width="70%" elevation="8" prepend-icon="mdi-axe" shaped>
 
-        <template v-slot:title>
-            Quiz
-        </template>
+            <template v-slot:title>
+                Quiz
+            </template>
 
-        <v-divider class="mx-4"></v-divider>
+            <v-divider class="mx-4"></v-divider>
 
-        <h2>Category</h2>
-        <div class="d-flex justify-start">
-            <v-chip-group v-model="category">
-                <v-chip :disabled="!start" filter>Science: Computers</v-chip>
+            <h2>Category</h2>
+            <div class="d-flex justify-start">
+                <v-chip-group v-model="category">
+                    <v-chip :disabled="!start" filter>Science: Computers</v-chip>
 
-                <v-chip :disabled="!start" filter>Entertainment: Board Games</v-chip>
+                    <v-chip :disabled="!start" filter>Entertainment: Board Games</v-chip>
 
-                <v-chip :disabled="!start" filter>Entertainment: Video Games</v-chip>
-            </v-chip-group>
-        </div>
+                    <v-chip :disabled="!start" filter>Entertainment: Video Games</v-chip>
+                </v-chip-group>
+            </div>
 
-        <h2>Difficulty</h2>
-        <div class="d-flex justify-start">
-            <v-chip-group v-model="difficulty">
-                <v-chip :disabled="!start" filter>Easy</v-chip>
+            <h2>Difficulty</h2>
+            <div class="d-flex justify-start">
+                <v-chip-group v-model="difficulty">
+                    <v-chip :disabled="!start" filter>Easy</v-chip>
 
-                <v-chip :disabled="!start" filter>Medium</v-chip>
+                    <v-chip :disabled="!start" filter>Medium</v-chip>
 
-                <v-chip :disabled="!start" filter>Hard</v-chip>
-            </v-chip-group>
-        </div>
-        <div class="d-flex justify-space-around">
-            <v-btn :disabled="!start" rounded="pill" @click="load(0)" class="mt-5" style="background-color:green"
-                :loading="loadingbtn[0]">
-                Start Quiz
-            </v-btn>
-            <v-btn rounded="pill" :prepend-icon="playingSound ? 'mdi-music' : 'mdi-music-off'"
-                @click="load(1);playSound()" class="mt-5" style="background-color:blueviolet" :loading="loadingbtn[1]">
-                Music
-            </v-btn>
-        </div>
+                    <v-chip :disabled="!start" filter>Hard</v-chip>
+                </v-chip-group>
+            </div>
+            <div class="d-flex justify-space-around">
+                <v-btn :disabled="!start" rounded="pill" @click="load(0)" class="mt-5" style="background-color:green"
+                    :loading="loadingbtn[0]">
+                    Start Quiz
+                </v-btn>
+                <v-btn rounded="pill" :prepend-icon="playingSound ? 'mdi-music' : 'mdi-music-off'"
+                    @click="load(1);playSound()" class="mt-5" style="background-color:blueviolet"
+                    :loading="loadingbtn[1]">
+                    Music
+                </v-btn>
+            </div>
 
-        <v-divider class="mt-4"></v-divider>
+            <v-divider class="mt-4"></v-divider>
 
-        <v-container>
-            <v-row dense>
-                <v-container>
-                    <div v-show="!loading">
+            <v-container justify="center">
+                <v-row dense>
+                    <v-container>
+                        <div v-show="!loading">
 
+                            <v-row no-gutters justify="center" style="text-align:center">
+                                <v-col>
+                                    <v-sheet class="pa-2 ma-2">
+                                        <h2>Score: <strong>{{ correctAnswers }}</strong></h2>
+                                    </v-sheet>
+                                </v-col>
+                                <v-col>
+                                    <v-sheet class="pa-2 ma-2">
+                                        <h2>Currently at question <br><strong>{{ index + 1 }} of {{ questions.length
+                                        }}</strong></h2>
+                                    </v-sheet>
+                                </v-col>
+                                <v-col>
+                                    <v-sheet class="pa-2 ma-2">
+                                        <h2>Heart: <strong>{{ heart }}</strong></h2>
+                                    </v-sheet>
+                                </v-col>
+                            </v-row>
+
+                        </div>
+                    </v-container>
+                    <v-divider class="mx-4"></v-divider>
+
+                    <h1 v-html="loading ? 'Start to begin' : currentQuestion.question"
+                        style="width:100%; text-align: center;"></h1>
+                    <!-- Only first question is displayed -->
+                    <v-divider class="mx-4"></v-divider>
+
+                    <form id="formBtn" class="d-flex flex-column pa-6 w-100" v-if="currentQuestion">
                         <v-row no-gutters justify="center" style="text-align:center">
-                            <v-col>
+                            <v-col v-for="answer in currentQuestion.answers">
                                 <v-sheet class="pa-2 ma-2">
-                                    <h2>Score: <strong>{{ correctAnswers }}</strong></h2>
-                                </v-sheet>
-                            </v-col>
-                            <v-col>
-                                <v-sheet class="pa-2 ma-2">
-                                    <h2>Currently at question <br><strong>{{ index + 1 }} of {{ questions.length
-                                    }}</strong></h2>
-                                </v-sheet>
-                            </v-col>
-                            <v-col>
-                                <v-sheet class="pa-2 ma-2">
-                                    <h2>Heart: <strong>{{ heart }}</strong></h2>
+                                    <button :index="currentQuestion.key" :key="answer" v-html="answer"
+                                        @click.prevent="handleClick" type="button"
+                                        class="btn btn-secondary w-100 h-100"></button>
                                 </v-sheet>
                             </v-col>
                         </v-row>
 
-                    </div>
-                </v-container>
-                <v-divider class="mx-4"></v-divider>
+                    </form>
 
-                <h1 v-html="loading ? 'Start to begin' : currentQuestion.question"
-                    style="width:100%; text-align: center;"></h1>
-                <!-- Only first question is displayed -->
-                <v-divider class="mx-4"></v-divider>
+                </v-row>
+            </v-container>
+        </v-card>
+    </v-parallax>
 
-                <form id="formBtn" v-if="currentQuestion">
-                    <div class="btn-group-vertical" role="group" aria-label="First group">
-                        <button v-for="answer in currentQuestion.answers" :index="currentQuestion.key" :key="answer"
-                            v-html="answer" @click.prevent="handleClick" type="button"
-                            class="btn btn-secondary"></button>
-                    </div>
-                </form>
-            </v-row>
-        </v-container>
-    </v-card>
 </template>
   
 <script>
 import axios from 'axios';
 import sound from '../assets/sounds/music.mp3'
 const audio = new Audio(sound)
-audio.volume = 0.5
+audio.volume = 0.4
 audio.loop = true
+
 export default {
     data() {
         return {
@@ -519,12 +534,6 @@ export default {
 </script>
   
 <style scoped>
-.container {
-    margin: 1rem auto;
-    padding: 1rem;
-    width: 100%;
-}
-
 #formBtn button {
     font-size: 1.1rem;
     box-sizing: border-box;
@@ -538,7 +547,8 @@ export default {
 }
 
 #formBtn button:hover:enabled {
-    transform: scale(1.02);
+    align-self: center;
+    transform: scale(1.2);
     box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12),
         0 3px 1px -1px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -555,17 +565,20 @@ export default {
 @keyframes flashButton {
     0% {
         opacity: 1;
-        transform: scale(1.01);
+        z-index: 5;
+        transform: scale(1.3);
     }
 
     50% {
         opacity: 0.7;
-        transform: scale(1.02);
+        z-index: 5;
+        transform: scale(1.5);
     }
 
     100% {
         opacity: 1;
-        transform: scale(1);
+        z-index: 5;
+        transform: scale(1.3);
     }
 }
 

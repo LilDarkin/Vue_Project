@@ -1,3 +1,7 @@
+<script setup>
+import Image from '../assets/images/string_bg.jpg'
+</script>
+
 <style >
 @keyframes RGB {
      0% {
@@ -99,33 +103,37 @@
 }
 </style>
 
+   
 <template>
-     <v-card class="mx-auto my-12 pa-3 cardRGB" max-width="500" elevation="8" shaped>
+     <v-parallax :src="Image">
+          <v-card class="mx-auto my-12 pa-3 cardRGB" max-width="500" elevation="8" shaped>
 
-          <v-card-title>String Manipulator</v-card-title>
+               <v-card-title>String Manipulator</v-card-title>
 
-          <div class="sy-4 text-subtitle">
-               <v-text-field label="Enter a String" v-model="text" @change="answer"></v-text-field>
-          </div>
-
-          <v-divider class="mx-4"></v-divider>
-
-          <v-card-text>
-               <div class="my-4 text-subtitle-1">
-                    Vowels: <p class="animText"> {{  vow  }}</p>
+               <div class="sy-4 text-subtitle">
+                    <v-text-field label="Enter a String" v-model="text" @change="answer"></v-text-field>
                </div>
-               <div class="my-4 text-subtitle-1">
-                    Consonants: <p class="animText"> {{  conso  }}</p>
-               </div>
-               <div class="my-4 text-subtitle-1">
-                    Number of Characters: <p class="animText"> {{  count  }}</p>
-               </div>
-               <div class="my-4 text-subtitle-1">
-                    Vowels to *:<p class="animText"> {{  con  }}</p>
-               </div>
-          </v-card-text>
 
-     </v-card>
+               <v-divider class="mx-4"></v-divider>
+
+               <v-card-text>
+                    <div class="my-4 text-subtitle-1">
+                         Vowels: <p class="animText"> {{ vow }}</p>
+                    </div>
+                    <div class="my-4 text-subtitle-1">
+                         Consonants: <p class="animText"> {{ conso }}</p>
+                    </div>
+                    <div class="my-4 text-subtitle-1">
+                         Number of Characters: <p class="animText"> {{ count }}</p>
+                    </div>
+                    <div class="my-4 text-subtitle-1">
+                         Vowels to *:<p class="animText"> {{ con }}</p>
+                    </div>
+               </v-card-text>
+
+          </v-card>
+     </v-parallax>
+
 
 </template>
 
