@@ -93,7 +93,7 @@
 <template>
   <nav>
     <v-toolbar class="toolbarRGB" app>
-      <v-toolbar-title>Welcome ❣️</v-toolbar-title>
+      <v-toolbar-title>Rawr ❣️</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu open-on-hover>
 
