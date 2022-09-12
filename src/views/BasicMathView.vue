@@ -9,12 +9,12 @@ import Image from '../assets/images/math_bg.jpg'
       <v-card-title>Basic Math</v-card-title>
 
       <div class="sy-4 text-subtitle">
-        <v-text-field :model-value="fNumber" v-on:input="event => fNumber = event.target.value" @change="answer">
+        <v-text-field label="Enter First #" :model-value="fNumber" v-on:input="event => fNumber = event.target.value" @change="answer">
         </v-text-field>
 
       </div>
       <div class="sy-4 text-subtitle">
-        <v-text-field :model-value="sNumber" v-on:input="event => sNumber = event.target.value" @change="answer">
+        <v-text-field label="Enter Second #" :model-value="sNumber" v-on:input="event => sNumber = event.target.value" @change="answer">
         </v-text-field>
       </div>
       <v-divider class="mx-4"></v-divider>
