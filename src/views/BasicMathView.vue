@@ -1,5 +1,5 @@
 <script setup>
-  import Image from '../assets/images/math_bg.jpg'
+import Image from '../assets/images/math_bg.jpg'
 </script>
 
 <template>
@@ -9,10 +9,10 @@
       <v-card-title>Basic Math</v-card-title>
 
       <div class="sy-4 text-subtitle">
-        <v-text-field label="Enter first #" :model-value="fNumber" v-model.number="fNumber" @change="answer"></v-text-field>
+        <input v-bind:value="fNumber" v-on:input="fNumber = $event.target.value">
       </div>
       <div class="sy-4 text-subtitle">
-        <v-text-field label="Enter second #" :model-value="sNumber" v-model.number="sNumber" @change="answer"></v-text-field>
+        <v-text-field label="Enter second #" v-model.number="sNumber" @change="answer"></v-text-field>
       </div>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
