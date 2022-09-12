@@ -76,7 +76,7 @@ export default {
       {
         title: 'About the Website',
         img: hWebsite,
-        path: '/website',
+        path: '/about',
 
       },
     ],
