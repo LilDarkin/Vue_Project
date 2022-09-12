@@ -14,23 +14,26 @@ import Image from '../assets/images/quiz.jpg'
 
             <h2>Category</h2>
             <div class="d-flex justify-start">
-                <v-chip-group v-model="category">
-                    <v-chip :disabled="!start" filter>Science: Computers</v-chip>
+                <v-chip-group>
+                    <v-chip :disabled="!start" @click="category=0" filter>Science:
+                        Computers</v-chip>
 
-                    <v-chip :disabled="!start" filter>Entertainment: Board Games</v-chip>
+                    <v-chip :disabled="!start" filter @click="category=1">
+                        Entertainment: Board Games</v-chip>
 
-                    <v-chip :disabled="!start" filter>Entertainment: Video Games</v-chip>
+                    <v-chip :disabled="!start" filter @click="category=2">
+                        Entertainment: Video Games</v-chip>
                 </v-chip-group>
             </div>
 
             <h2>Difficulty</h2>
             <div class="d-flex justify-start">
-                <v-chip-group v-model="difficulty">
-                    <v-chip :disabled="!start" filter>Easy</v-chip>
+                <v-chip-group>
+                    <v-chip :disabled="!start" filter @click="difficulty=0">Easy</v-chip>
 
-                    <v-chip :disabled="!start" filter>Medium</v-chip>
+                    <v-chip :disabled="!start" filter @click="difficulty=1">Medium</v-chip>
 
-                    <v-chip :disabled="!start" filter>Hard</v-chip>
+                    <v-chip :disabled="!start" filter @click="difficulty=2">Hard</v-chip>
                 </v-chip-group>
             </div>
             <div class="d-flex justify-space-around">
@@ -225,6 +228,7 @@ export default {
             }
         },
         load(i) {
+            console.log(this.category)
             this.loadingbtn[i] = true
             if (i == 1) {
                 setTimeout(() => (this.loadingbtn[i] = false, this.playingSound = !this.playingSound), 1000)

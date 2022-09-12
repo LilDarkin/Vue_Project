@@ -111,7 +111,8 @@ import Image from '../assets/images/string_bg.jpg'
                <v-card-title>String Manipulator</v-card-title>
 
                <div class="sy-4 text-subtitle">
-                    <v-text-field label="Enter a String" v-model="text" @change="answer"></v-text-field>
+                    <v-text-field label="Input any text" :model-value="text" v-on:input="event => text = event.target.value" @change="answer">
+                    </v-text-field>
                </div>
 
                <v-divider class="mx-4"></v-divider>
