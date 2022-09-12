@@ -1,5 +1,5 @@
 <script setup>
-  import Image from '../assets/images/math_bg.jpg'
+import Image from '../assets/images/math_bg.jpg'
 </script>
 
 <template>
@@ -9,10 +9,13 @@
       <v-card-title>Basic Math</v-card-title>
 
       <div class="sy-4 text-subtitle">
-        <input v-model="fNumber" placeholder="edit me" @change="answer">
+        <v-text-field :model-value="fNumber" v-on:input="event => fNumber = event.target.value" @change="answer">
+        </v-text-field>
+
       </div>
       <div class="sy-4 text-subtitle">
-        <input v-model="sNumber" placeholder="edit me" @change="answer">
+        <v-text-field :model-value="sNumber" v-on:input="event => sNumber = event.target.value" @change="answer">
+        </v-text-field>
       </div>
       <v-divider class="mx-4"></v-divider>
       <v-card-text>
@@ -61,7 +64,7 @@ export default {
   },
   computed: {
     answer: function () {
-      this.sum = this.fNumber + this.sNumber;
+      this.sum = Number(this.fNumber) + Number(this.sNumber);
       this.avg = this.sum / 2;
       this.prod = this.fNumber * this.sNumber;
       this.quo = this.fNumber / this.sNumber;
