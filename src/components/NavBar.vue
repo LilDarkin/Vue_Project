@@ -95,6 +95,7 @@
     <v-toolbar class="toolbarRGB" app>
       <v-toolbar-title>Rawr ❣️</v-toolbar-title>
       <v-spacer></v-spacer>
+
       <v-menu open-on-hover>
 
         <template v-slot:activator="{ props }">
@@ -116,9 +117,8 @@
         <v-list>
           <v-list-item
             prepend-avatar="https://scontent.fmnl9-2.fna.fbcdn.net/v/t39.30808-6/285904537_7617205418351303_7735473882644039146_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHIPWzc2HNBuCxZ_399GXGH6z0lwVrMu6jrPSXBWsy7qOOsr-UohG1aT3CRSwR8RgrBD_momtxa5k7KNDeMuZUX&_nc_ohc=9NWPJI7Hv10AX-ZN3cR&tn=Ov07vvXkhUqrdXVp&_nc_ht=scontent.fmnl9-2.fna&oh=00_AT_Th6xyVZi6u5NkwkFXpaKRbcBiNFRaQ62J-AXon6nA5w&oe=631B0CD9"
-            title="Bon Nel" subtitle="Sheesh"></v-list-item>
+            title="Bon Nel" subtitle="Sheesh"><span style="font-size: xx-small;">version:1</span></v-list-item>
         </v-list>
-
         <v-divider></v-divider>
 
         <v-list density="compact" app>
