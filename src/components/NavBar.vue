@@ -91,13 +91,17 @@
 </style>
 
 <template>
-  <nav>
-    <v-toolbar class="toolbarRGB" app>
-      <v-toolbar-title>Rawr ❣️</v-toolbar-title>
-      <v-spacer></v-spacer>
 
+
+  <v-toolbar class="toolbarRGB" app>
+    <v-toolbar-title>Rawr ❣️</v-toolbar-title>
+    <v-spacer></v-spacer>
+
+    <div v-if="user.loggedIn">
+      <v-btn color="white" class="font-weight-bold" @click.prevent="signOut" href="/" prepend-icon="mdi-logout-variant">
+        Logout
+      </v-btn>
       <v-menu open-on-hover>
-
         <template v-slot:activator="{ props }">
           <v-btn icon v-bind="props">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -110,14 +114,29 @@
           </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar>
-
-    <v-navigation-drawer style="color:aqua" expand-on-hover rail>
-      <v-parallax src="https://wallpapers.com/images/file/dark-blue-aesthetic-glowing-triangles-e63gsnm9zakquywb.jpg" class="fill-height">
+    </div>
+    <div v-else>
+      <v-btn color="white" class="font-weight-bold" href="/login" prepend-icon="mdi-login-variant">
+        Login
+      </v-btn>
+      <v-btn color="white" class="font-weight-bold" href="/register" prepend-icon="mdi-account-plus-outline">
+        Register
+      </v-btn>
+    </div>
+  </v-toolbar>
+  <div v-if="user.loggedIn">
+    <v-navigation-drawer style="color:aqua" expand-on-hover rail="true">
+      <v-parallax src="https://wallpapers.com/images/file/dark-blue-aesthetic-glowing-triangles-e63gsnm9zakquywb.jpg"
+        class="fill-height">
         <v-list>
           <v-list-item
             prepend-avatar="https://scontent.fmnl25-3.fna.fbcdn.net/v/t39.30808-6/285904537_7617205418351303_7735473882644039146_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHIPWzc2HNBuCxZ_399GXGH6z0lwVrMu6jrPSXBWsy7qOOsr-UohG1aT3CRSwR8RgrBD_momtxa5k7KNDeMuZUX&_nc_ohc=d21oIokLXjQAX-tnyIU&tn=Ov07vvXkhUqrdXVp&_nc_ht=scontent.fmnl25-3.fna&oh=00_AT8rOHbCwHtA9iIJ0Pjsf2VjbDUWb2K5Saf6dU7J7PG5Ig&oe=6322F5D9"
-            title="Bon Nel" subtitle="Sheesh"><span style="font-size: xx-small;">version:1.3</span></v-list-item>
+            :title="user.data.displayName" :subtitle="user.data.email"><span
+              style="font-size: xx-small;">version:1.3</span></v-list-item>
+              <v-list-item prepend-icon="mdi-account" subtitle="Profile" href="/profile"></v-list-item>
+          <v-list-item prepend-icon="mdi-logout-variant" subtitle="Logout" @click.prevent="signOut" href="/">
+
+          </v-list-item>
         </v-list>
         <v-divider></v-divider>
 
@@ -128,25 +147,50 @@
 
           </v-list-item>
         </v-list>
-      </v-parallax>
 
+      </v-parallax>
     </v-navigation-drawer>
-  </nav>
+  </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { auth } from '../firebase'
 
-const drawer = ref(false)
+export default {
+  name: "DashboardComponent",
+  data() {
+    return {
+      drawer: false,
+      items: [
+        { title: 'Home', icon: 'mdi-home-account', path: '/', color: "warning" },
+        { title: 'Math', icon: 'mdi-calculator-variant', path: '/basicMath', color: "warning" },
+        { title: 'String App', icon: 'mdi-message-processing', path: '/stringApp', color: "warning" },
+        { title: 'Vuetify', icon: 'mdi-vuetify', path: '/vuetify', color: 'warning' },
+        { title: 'Quiz', icon: 'mdi-book-open', path: '/quiz', color: 'warning' },
+        { title: 'Developer', icon: 'mdi-account-multiple', path: '/bonnel', color: 'warning' },
+        { title: 'Website', icon: 'mdi-web', path: '/about', color: 'warning' },
+      ],
+      rail: false,
+    }
+  },
+  setup() {
 
-const items = ref([
-  { title: 'Home', icon: 'mdi-home-account', path: '/', color: "warning" },
-  { title: 'Math', icon: 'mdi-calculator-variant', path: '/basicMath', color: "warning" },
-  { title: 'String App', icon: 'mdi-message-processing', path: '/stringApp', color: "warning" },
-  { title: 'Vuetify', icon: 'mdi-vuetify', path: '/vuetify', color: 'warning' },
-  { title: 'Quiz', icon: 'mdi-book-open', path: '/quiz', color: 'warning' },
-  { title: 'Profile', icon: 'mdi-account-multiple', path: '/bonnel', color: 'warning' },
-  { title: 'Website', icon: 'mdi-web', path: '/about', color: 'warning' },
-])
-
+    const store = useStore()
+    const router = useRouter()
+    auth.onAuthStateChanged(user => {
+      store.dispatch("fetchUser", user);
+    });
+    const user = computed(() => {
+      return store.getters.user;
+    });
+    const signOut = async () => {
+      await store.dispatch('logOut')
+      router.push('/login')
+    }
+    return { user, signOut }
+  }
+};
 </script>

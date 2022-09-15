@@ -1,4 +1,5 @@
 <template>
+    
     <div id="app">
         <quiz @quiz-completed="handleQuizCompleted" :key="quizKey" />
         <custom-modal v-show="showModal" header="FINAL SCORE"
