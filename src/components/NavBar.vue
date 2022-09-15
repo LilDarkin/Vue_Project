@@ -116,10 +116,10 @@
       </v-menu>
     </div>
     <div v-else>
-      <v-btn color="white" class="font-weight-bold" href="/login" prepend-icon="mdi-login-variant">
+      <v-btn color="white" class="font-weight-bold" router :to="loginUrl" prepend-icon="mdi-login-variant">
         Login
       </v-btn>
-      <v-btn color="white" class="font-weight-bold" href="/register" prepend-icon="mdi-account-plus-outline">
+      <v-btn color="white" class="font-weight-bold" router :to="registerUrl" prepend-icon="mdi-account-plus-outline">
         Register
       </v-btn>
     </div>
@@ -164,6 +164,8 @@ export default {
   data() {
     return {
       drawer: false,
+      loginUrl: '/login',
+      registerUrl: '/register',
       items: [
         { title: 'Home', icon: 'mdi-home-account', path: '/', color: "warning" },
         { title: 'Math', icon: 'mdi-calculator-variant', path: '/basicMath', color: "warning" },
