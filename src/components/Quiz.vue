@@ -1,118 +1,159 @@
-<script setup>
-import Image from '../assets/images/quiz.jpg'
-</script>
-  
 <template>
     <v-parallax :src="Image">
-        <v-card class="mx-auto my-12 pa-3" max-width="70%" elevation="8" prepend-icon="mdi-axe" shaped>
+        <div v-if="user.loggedIn">
+            <v-card class="mx-auto my-12 pa-3" max-width="70%" elevation="8" prepend-icon="mdi-axe" shaped>
 
-            <template v-slot:title>
-                Quiz
-            </template>
+                <template v-slot:title>
+                    Quiz
+                </template>
 
-            <v-divider class="mx-4"></v-divider>
+                <v-divider class="mx-4"></v-divider>
 
-            <h2>Category</h2>
-            <div class="d-flex justify-start">
-                <v-chip-group>
-                    <v-chip :disabled="!start" @click="category=0" filter>Science:
-                        Computers</v-chip>
+                <h2>Category</h2>
+                <div class="d-flex justify-start">
+                    <v-chip-group>
+                        <v-chip :disabled="!start" @click="category=0" filter>Science:
+                            Computers</v-chip>
 
-                    <v-chip :disabled="!start" filter @click="category=1">
-                        Entertainment: Board Games</v-chip>
+                        <v-chip :disabled="!start" filter @click="category=1">
+                            Entertainment: Board Games</v-chip>
 
-                    <v-chip :disabled="!start" filter @click="category=2">
-                        Entertainment: Video Games</v-chip>
-                </v-chip-group>
-            </div>
+                        <v-chip :disabled="!start" filter @click="category=2">
+                            Entertainment: Video Games</v-chip>
+                    </v-chip-group>
+                </div>
 
-            <h2>Difficulty</h2>
-            <div class="d-flex justify-start">
-                <v-chip-group>
-                    <v-chip :disabled="!start" filter @click="difficulty=0">Easy</v-chip>
+                <h2>Difficulty</h2>
+                <div class="d-flex justify-start">
+                    <v-chip-group>
+                        <v-chip :disabled="!start" filter @click="difficulty=0">Easy</v-chip>
 
-                    <v-chip :disabled="!start" filter @click="difficulty=1">Medium</v-chip>
+                        <v-chip :disabled="!start" filter @click="difficulty=1">Medium</v-chip>
 
-                    <v-chip :disabled="!start" filter @click="difficulty=2">Hard</v-chip>
-                </v-chip-group>
-            </div>
-            <div class="d-flex justify-space-around">
-                <v-btn :disabled="!start" rounded="pill" @click="load(0)" class="mt-5" style="background-color:green"
-                    :loading="loadingbtn[0]">
-                    Start Quiz
-                </v-btn>
-                <v-btn rounded="pill" :prepend-icon="playingSound ? 'mdi-music' : 'mdi-music-off'"
-                    @click="load(1);playSound()" class="mt-5" style="background-color:blueviolet"
-                    :loading="loadingbtn[1]">
-                    Music
-                </v-btn>
-            </div>
+                        <v-chip :disabled="!start" filter @click="difficulty=2">Hard</v-chip>
+                    </v-chip-group>
+                </div>
+                <div class="d-flex justify-space-around">
+                    <v-btn :disabled="!start" rounded="pill" @click="load(0)" class="mt-5"
+                        style="background-color:green" :loading="loadingbtn[0]">
+                        Start Quiz
+                    </v-btn>
+                    <v-btn rounded="pill" :prepend-icon="playingSound ? 'mdi-music' : 'mdi-music-off'"
+                        @click="load(1);playSound()" class="mt-5" style="background-color:blueviolet"
+                        :loading="loadingbtn[1]">
+                        Music
+                    </v-btn>
+                </div>
 
-            <v-divider class="mt-4"></v-divider>
+                <v-divider class="mt-4"></v-divider>
 
-            <v-container justify="center">
-                <v-row dense>
-                    <v-container>
-                        <div v-show="!loading">
+                <v-container justify="center">
+                    <v-row dense>
+                        <v-container>
+                            <div v-show="!loading">
 
+                                <v-row no-gutters justify="center" style="text-align:center">
+                                    <v-col>
+                                        <v-sheet class="pa-2 ma-2">
+                                            <h2>Score: <strong>{{ correctAnswers }}</strong></h2>
+                                        </v-sheet>
+                                    </v-col>
+                                    <v-col>
+                                        <v-sheet class="pa-2 ma-2">
+                                            <h2>Currently at question <br><strong>{{ index + 1 }} of {{ questions.length
+                                            }}</strong></h2>
+                                        </v-sheet>
+                                    </v-col>
+                                    <v-col>
+                                        <v-sheet class="pa-2 ma-2">
+                                            <h2>Heart: <strong>{{ heart }}</strong></h2>
+                                        </v-sheet>
+                                    </v-col>
+                                </v-row>
+
+                            </div>
+                        </v-container>
+                        <v-divider class="mx-4"></v-divider>
+
+                        <h1 v-html="loading ? 'Start to begin' : currentQuestion.question"
+                            style="width:100%; text-align: center;"></h1>
+                        <!-- Only first question is displayed -->
+                        <v-divider class="mx-4"></v-divider>
+
+                        <form id="formBtn" class="d-flex flex-column pa-6 w-100" v-if="currentQuestion">
                             <v-row no-gutters justify="center" style="text-align:center">
-                                <v-col>
+                                <v-col v-for="answer in currentQuestion.answers">
                                     <v-sheet class="pa-2 ma-2">
-                                        <h2>Score: <strong>{{ correctAnswers }}</strong></h2>
-                                    </v-sheet>
-                                </v-col>
-                                <v-col>
-                                    <v-sheet class="pa-2 ma-2">
-                                        <h2>Currently at question <br><strong>{{ index + 1 }} of {{ questions.length
-                                        }}</strong></h2>
-                                    </v-sheet>
-                                </v-col>
-                                <v-col>
-                                    <v-sheet class="pa-2 ma-2">
-                                        <h2>Heart: <strong>{{ heart }}</strong></h2>
+                                        <button :index="currentQuestion.key" :key="answer" v-html="answer"
+                                            @click.prevent="handleClick" type="button"
+                                            class="btn btn-secondary w-100 h-100"></button>
                                     </v-sheet>
                                 </v-col>
                             </v-row>
 
+                        </form>
+
+                    </v-row>
+                </v-container>
+            </v-card>
+        </div>
+        <div v-else>
+            <v-card class="mx-auto mt-6 bg-info" max-width="25%" variant="outlined">
+                <v-card-item color="white">
+                    <div>
+                        <div class="text-overline mb-1">
+                            YOU ARE NOT LOGGED IN!
                         </div>
-                    </v-container>
-                    <v-divider class="mx-4"></v-divider>
-
-                    <h1 v-html="loading ? 'Start to begin' : currentQuestion.question"
-                        style="width:100%; text-align: center;"></h1>
-                    <!-- Only first question is displayed -->
-                    <v-divider class="mx-4"></v-divider>
-
-                    <form id="formBtn" class="d-flex flex-column pa-6 w-100" v-if="currentQuestion">
-                        <v-row no-gutters justify="center" style="text-align:center">
-                            <v-col v-for="answer in currentQuestion.answers">
-                                <v-sheet class="pa-2 ma-2">
-                                    <button :index="currentQuestion.key" :key="answer" v-html="answer"
-                                        @click.prevent="handleClick" type="button"
-                                        class="btn btn-secondary w-100 h-100"></button>
-                                </v-sheet>
-                            </v-col>
-                        </v-row>
-
-                    </form>
-
-                </v-row>
-            </v-container>
-        </v-card>
+                        <div class="text-caption mb-3">Please login if you already have an account, otherwise create one
+                            now.</div>
+                    </div>
+                </v-card-item>
+            </v-card>
+        </div>
     </v-parallax>
 
 </template>
   
 <script>
 import axios from 'axios';
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { computed, toDisplayString } from "vue";
+import { auth } from '../firebase'
+import DataService from "../services/DataService";
+
+//Assets
 import sound from '../assets/sounds/music.mp3'
+import ImageSrc from '../assets/images/quiz.jpg'
 const audio = new Audio(sound)
 audio.volume = 0.4
 audio.loop = true
 
 export default {
+    setup() {
+        const Image = ImageSrc;
+        const store = useStore()
+        const router = useRouter()
+        auth.onAuthStateChanged(user => {
+            store.dispatch("fetchUser", user);
+        });
+        const user = computed(() => {
+            return store.getters.user;
+        });
+        const signOut = async () => {
+            await store.dispatch('logOut')
+            router.push('/login')
+        }
+        return { user, signOut, Image }
+    },
     data() {
         return {
+            timeTake: "",
+            History: {
+                averageScore: "",
+                timeTaken: "",
+                timeFinished: "",
+            },
             playingSound: false,
             heart: 5,
             start: true,
@@ -208,16 +249,47 @@ export default {
         quizCompleted(completed) {
             completed &&
                 setTimeout(() => {
+                    this.saveTutorial();
                     this.$emit("quiz-completed", this.score);
                 }, 3000);
         },
         outOfHeart(completed) {
             completed && setTimeout(() => {
+                this.saveTutorial();
                 this.$emit("quiz-completed", this.score);
             }, 3000);
         },
     },
     methods: {
+        saveTutorial() {
+            const today = new Date();
+            var data = {
+                averageScore: Math.floor(
+                    (this.score.correctlyAnsweredQuestions / this.score.allQuestions) *
+                    100
+                ) + "%",
+                timeTaken: this.timeTake,
+                timeFinished: today.toGMTString(),
+            };
+            DataService.create(data)
+                .then(() => {
+                    console.log("Created new item successfully!");
+                    this.submitted = true;
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        },
+
+        newTutorial() {
+            this.submitted = false;
+            this.History = {
+                averageScore: 0,
+                timeTaken: "",
+                timeFinished: "",
+            };
+        },
+
         playSound() {
             if (this.playingSound) {
                 audio.pause();
@@ -228,12 +300,12 @@ export default {
             }
         },
         load(i) {
-            console.log(this.category)
+            const taken = new Date()
             this.loadingbtn[i] = true
             if (i == 1) {
                 setTimeout(() => (this.loadingbtn[i] = false, this.playingSound = !this.playingSound), 1000)
             } else {
-                setTimeout(() => (this.loadingbtn[i] = false, this.fetchQuestions(this.category, this.difficulty), this.start = false), 3000)
+                setTimeout(() => (this.loadingbtn[i] = false, this.timeTake = taken.toGMTString(), this.fetchQuestions(this.category, this.difficulty), this.start = false), 3000)
             }
         },
         async fetchQuestions(category, difficulty) {

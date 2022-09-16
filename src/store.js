@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import { auth } from "./firebase";
+import { database } from "./firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -36,6 +37,12 @@ const store = createStore({
         password
       );
       if (response) {
+
+        const dbRef = database.ref("Users");
+        dbRef.child(response.user.uid).child("User Information").child("Admin").set(false);
+        dbRef.child(response.user.uid).child("User Information").child("Username").set(name);
+        dbRef.child(response.user.uid).child("User Information").child("Email").set(email);
+
         context.commit("SET_USER", response.user);
         await updateProfile(response.user, {
           displayName: name,

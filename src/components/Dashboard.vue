@@ -1,16 +1,21 @@
-<script setup>
-import Image from '../assets/images/about.jpg'
-import hWebsite from '../assets/images/h_website.png'
-import hMath from '../assets/images/h_math.png'
-import hString from '../assets/images/h_string.png'
-import hProfile from '../assets/images/h_profile.png'
-import hQuiz from '../assets/images/h_quiz.png'
-import hVuetify from '../assets/images/h_vuetify.png'
-</script>
-    
 <template>
   <v-parallax :src="Image">
-    <h1 class="pa-4 text-center font-weight-bold">WELCOME</h1>
+    <div v-if="user.loggedIn">
+      <h1 class="pa-4 text-center font-weight-bold">WELCOME, {{ user.data.displayName }}</h1>
+    </div>
+    <div v-else>
+      <v-card class="mx-auto mt-6 bg-info" max-width="25%" variant="outlined">
+        <v-card-item color="white">
+          <div>
+            <div class="text-overline mb-1">
+              YOU ARE NOT LOGGED IN!
+            </div>
+            <div class="text-caption mb-3">Please login if you already have an account, otherwise create one
+              now.</div>
+          </div>
+        </v-card-item>
+      </v-card>
+    </div>
     <v-divider></v-divider>
 
     <v-container class="pa-4 text-center">
@@ -18,8 +23,8 @@ import hVuetify from '../assets/images/h_vuetify.png'
         <template v-for="(item, i) in items" :key="i">
           <v-col cols="12" md="4">
             <v-hover v-slot="{ isHovering, props }">
-              <v-card :elevation="isHovering ? 12 : 2" :class="{ 'on-hover': isHovering }" v-bind="props"
-                :to="item.path">
+              <v-card :disabled="!user.loggedIn" :elevation="isHovering ? 12 : 2" :class="{ 'on-hover': isHovering }"
+                v-bind="props" :to="item.path">
                 <v-img :src="item.img" height="225px" cover>
                   <v-card-title class="text-h6 d-flex justify-center align-center h-100">
                     <p class="mt-4">
@@ -35,12 +40,37 @@ import hVuetify from '../assets/images/h_vuetify.png'
     </v-container>
 
     <v-divider></v-divider>
-    <h2 class="pa-4 text-center">Click the links above to explore the website.</h2>
+    <div v-if="user.loggedIn">
+      <h2 class="pa-4 text-center">To explore the website, use the links above</h2>
+    </div>
+    <div v-else>
+      <div class="d-flex justify-center w-100">
+        <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
+      </div>
+
+    </div>
+
+
+
   </v-parallax>
 
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { auth } from '../firebase'
+
+//Images
+import ImageSrc from '../assets/images/about.jpg'
+import hWebsite from '../assets/images/h_website.png'
+import hMath from '../assets/images/h_math.png'
+import hString from '../assets/images/h_string.png'
+import hProfile from '../assets/images/h_profile.png'
+import hQuiz from '../assets/images/h_quiz.png'
+import hVuetify from '../assets/images/h_vuetify.png'
+
 export default {
   data: () => ({
     items: [
@@ -82,6 +112,23 @@ export default {
     ],
     transparent: 'rgba(255, 255, 255, 0)',
   }),
+  setup() {
+
+    const Image = ImageSrc;
+    const store = useStore()
+    const router = useRouter()
+    auth.onAuthStateChanged(user => {
+      store.dispatch("fetchUser", user);
+    });
+    const user = computed(() => {
+      return store.getters.user;
+    });
+    const signOut = async () => {
+      await store.dispatch('logOut')
+      router.push('/login')
+    }
+    return { user, signOut, Image }
+  }
 }
 </script>
 

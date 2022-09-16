@@ -8,6 +8,7 @@ import AboutWebsiteView from "../views/AboutWebsiteView.vue";
 import AboutMeView from "../views/AboutMeView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import QuizHistoryView from "../views/QuizHistoryView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: "/register",
       name: "register",
       component: RegisterView,
+    },
+    {
+      path: "/quizHistory",
+      name: "Quiz History",
+      component: QuizHistoryView,
     },
   ],
 });
