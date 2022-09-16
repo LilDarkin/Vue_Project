@@ -1,45 +1,30 @@
 <template>
     <div v-if="user.loggedIn">
-        <div v-if="currentTutorial" class="edit-form">
-            <h4>History</h4>
-            <form>
+        <div v-if="currentHisto">
+
+
+            <v-form class="m-3">
                 <div v-show="admin">
-                    <div class="form-group">
-                        <label for="userID">Owner (User ID)</label>
-                        <input disabled type="text" class="form-control" id="userID" v-model="currentTutorial.userID" />
-                    </div>
+                    <v-text-field label="Owner (User ID)" readonly v-model="currentHisto.userID"></v-text-field>
                 </div>
 
-                <div class="form-group">
-                    <label for="avgSc">Average Score</label>
-                    <input :disabled="!admin" type="text" class="form-control" id="avgSc"
-                        v-model="currentTutorial.averageScore" />
-                </div>
+                <v-text-field label="Average Score" :readonly="!admin" v-model="currentHisto.averageScore">
+                </v-text-field>
+                <v-text-field label="Date & Time: Taken" readonly v-model="currentHisto.timeTaken">
+                </v-text-field>
+                <v-text-field label="Date & Time: Finished" readonly v-model="currentHisto.timeFinished">
+                </v-text-field>
+            </v-form>
 
-                <div class="form-group">
-                    <label for="dtTaken">Date & Time: Taken</label>
-                    <input disabled type="text" class="form-control" id="dtTaken" v-model="currentTutorial.timeTaken" />
-                </div>
-
-                <div class="form-group">
-                    <label for="dtFinish">Date & Time: Finished</label>
-                    <input disabled type="text" class="form-control" id="dtFinish"
-                        v-model="currentTutorial.timeTaken" />
-                </div>
-            </form>
             <div v-show="admin">
-                <button class="badge badge-danger mr-2" @click="deleteTutorial">
-                    Delete
-                </button>
-
-                <button type="submit" class="badge badge-success" @click="updateTutorial">
-                    Update
-                </button>
-                <p>{{ message }}</p>
+                <div class="d-flex justify-space-around w-100 mb-3">
+                    <v-btn type="submit" color="success" @click="updateTutorial">Update</v-btn>
+                    <v-btn type="submit" color="error" @click="deleteTutorial">Delete</v-btn>
+                </div>
             </div>
-
         </div>
     </div>
+
     <div v-else>
         <v-card class="mx-auto mt-6 bg-info" max-width="25%" variant="outlined">
             <v-card-item color="white">
@@ -67,25 +52,25 @@ export default {
     data() {
         return {
             admin: false,
-            currentTutorial: null,
+            currentHisto: null,
             message: "",
         };
     },
     watch: {
         history: function (history) {
-            this.currentTutorial = { ...history };
+            this.currentHisto = { ...history };
             this.message = "";
         },
     },
     methods: {
         updateTutorial() {
             const data = {
-                averageScore: this.currentTutorial.averageScore,
-                timeTaken: this.currentTutorial.timeTaken,
-                timeFinished: this.currentTutorial.timeFinished,
+                averageScore: this.currentHisto.averageScore,
+                timeTaken: this.currentHisto.timeTaken,
+                timeFinished: this.currentHisto.timeFinished,
             };
             if (this.admin) {
-                DataService.update(this.currentTutorial.userID, this.currentTutorial.key, data)
+                DataService.update(this.currentHisto.userID, this.currentHisto.key, data)
                     .then(() => {
                         this.message = "The tutorial was updated successfully!";
                     })
@@ -93,7 +78,7 @@ export default {
                         console.log(e);
                     });
             } else {
-                DataService.update("0", this.currentTutorial.key, data)
+                DataService.update("0", this.currentHisto.key, data)
                     .then(() => {
                         this.message = "The tutorial was updated successfully!";
                     })
@@ -104,7 +89,7 @@ export default {
 
         },
         deleteTutorial() {
-            DataService.delete(this.currentTutorial.key)
+            DataService.delete(this.currentHisto.key)
                 .then(() => {
                     this.$emit("refreshList");
                 })
@@ -116,7 +101,7 @@ export default {
     mounted() {
         this.admin = DataService.isAdmin();
         this.message = "";
-        this.currentTutorial = { ...this.history }
+        this.currentHisto = { ...this.history }
     },
     setup() {
 

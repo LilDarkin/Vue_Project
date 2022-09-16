@@ -1,20 +1,21 @@
 <template>
-    <div class="list row">
-        <div class="col-md-6">
-            <h4>Quiz History</h4>
-            <ul class="list-group">
-                <li class="list-group-item" :class="{ active: index == currentIndex }" v-for="(history, index) in List"
-                    :key="index" @click="setActiveHistory(history, index)">
-                    {{ history.timeTaken }}
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-6">
+    <v-layout class="mt-5" row>
+        <v-card class="mx-auto w-25">
+            <v-card-title>Quiz History</v-card-title>
+            <v-list :class="{ active: index == currentIndex }" v-for="(history, index) in List" :key="index">
+                <v-list-item @click="setActiveHistory(history, index)">{{ index + " : " +history.timeTaken
+                }}
+                </v-list-item>
+            </v-list>
+
+        </v-card>
+        <v-card class="mx-auto w-50">
+        <v-card-title>History</v-card-title>
             <div v-if="currentHistory">
                 <QuizDetails :history="currentHistory" @refreshList="refreshList" />
             </div>
-        </div>
-    </div>
+        </v-card>
+    </v-layout>
 </template>
   
 <script>
@@ -31,7 +32,8 @@ export default {
             admin: false,
             List: [],
             currentHistory: null,
-            currentIndex: -1
+            currentIndex: -1,
+            historyClicked: false,
         };
     },
     methods: {
@@ -76,6 +78,7 @@ export default {
         refreshList() {
             this.currentHistory = null;
             this.currentIndex = -1;
+            this.historyClicked = false;
         },
         setActiveHistory(history, index) {
             this.currentHistory = history;
