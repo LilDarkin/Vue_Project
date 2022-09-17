@@ -1,58 +1,62 @@
 <template>
-  <v-parallax :src="Image">
-    <div v-if="user.loggedIn">
-      <h1 class="pa-4 text-center font-weight-bold">WELCOME, {{ user.data.displayName }}</h1>
-    </div>
-    <div v-else>
-      <v-card class="mx-auto mt-6 bg-info" max-width="25%" variant="outlined">
-        <v-card-item color="white">
-          <div>
-            <div class="text-overline mb-1">
-              YOU ARE NOT LOGGED IN!
+  <div>
+    <v-parallax :src="Image">
+      <div v-if="user.loggedIn">
+        <h1 class="pa-4 text-center font-weight-bold">WELCOME, {{ user.data.displayName }}</h1>
+      </div>
+      <div v-else>
+        <v-card class="mx-auto mt-6 bg-info" max-width="25%" variant="outlined">
+          <v-card-item color="white">
+            <div>
+              <div class="text-overline mb-1">
+                YOU ARE NOT LOGGED IN!
+              </div>
+              <div class="text-caption mb-3">Please login if you already have an account, otherwise create one
+                now.</div>
             </div>
-            <div class="text-caption mb-3">Please login if you already have an account, otherwise create one
-              now.</div>
-          </div>
-        </v-card-item>
-      </v-card>
-    </div>
-    <v-divider></v-divider>
+          </v-card-item>
+        </v-card>
+      </div>
+      <v-divider></v-divider>
 
-    <v-container class="pa-4 text-center">
-      <v-row class="fill-height" align="center" justify="center">
-        <template v-for="(item, i) in items" :key="i">
-          <v-col cols="12" md="4">
-            <v-hover v-slot="{ isHovering, props }">
-              <v-card :disabled="!user.loggedIn" :elevation="isHovering ? 12 : 2" :class="{ 'on-hover': isHovering }"
-                v-bind="props" :to="item.path">
-                <v-img :src="item.img" height="225px" cover>
-                  <v-card-title class="text-h6 d-flex justify-center align-center h-100">
-                    <p class="mt-4">
-                      {{ item.title }}
-                    </p>
-                  </v-card-title>
-                </v-img>
-              </v-card>
-            </v-hover>
-          </v-col>
-        </template>
-      </v-row>
-    </v-container>
+      <v-container class="pa-4 text-center">
+        <v-row class="fill-height" align="center" justify="center">
+          <template v-for="(item, i) in items" :key="i">
+            <v-col cols="12" md="4">
+              <v-hover v-slot="{ isHovering, props }">
+                <v-card :disabled="!user.loggedIn" :elevation="isHovering ? 12 : 2" :class="{ 'on-hover': isHovering }"
+                  v-bind="props" :to="item.path">
+                  <v-img :src="item.img" height="225px" cover>
+                    <v-card-title class="text-h6 d-flex justify-center align-center h-100">
+                      <p class="mt-4">
+                        {{ item.title }}
+                      </p>
+                    </v-card-title>
+                  </v-img>
+                </v-card>
+              </v-hover>
+            </v-col>
+          </template>
+        </v-row>
+      </v-container>
 
-    <v-divider></v-divider>
-    <div v-if="user.loggedIn">
-      <h2 class="pa-4 text-center">To explore the website, use the links above</h2>
-    </div>
-    <div v-else>
-      <div class="d-flex justify-center w-100">
-        <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
+      <v-divider></v-divider>
+      <div v-if="user.loggedIn">
+        <h2 class="pa-4 text-center">To explore the website, use the links above</h2>
+      </div>
+      <div v-else>
+        <div class="d-flex justify-center w-100">
+          <v-progress-circular :size="70" :width="7" color="purple" indeterminate></v-progress-circular>
+        </div>
+
       </div>
 
-    </div>
+    </v-parallax>
+  </div>
 
-
-
-  </v-parallax>
+  <v-overlay :model-value="overlay" :opacity="1" :absolute="true" class="align-center justify-center bounce bg-dark">
+    <v-progress-circular indeterminate size="64" color="info"></v-progress-circular>
+  </v-overlay>
 
 </template>
 
@@ -73,6 +77,8 @@ import hVuetify from '../assets/images/h_vuetify.png'
 
 export default {
   data: () => ({
+    show: true,
+    overlay: true,
     items: [
       {
         title: 'Basic Math',
@@ -128,23 +134,11 @@ export default {
       router.push('/login')
     }
     return { user, signOut, Image }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.overlay = false
+    }, 1300)
   }
 }
 </script>
-
-<style scoped>
-.v-card {
-  transition: opacity .4s ease-in-out;
-}
-
-.v-card:not(.on-hover) {
-  z-index: 1;
-  opacity: 0.6;
-}
-
-.v-card:is(.on-hover) {
-  z-index: 2;
-  transform: scale(1.2);
-  opacity: 1;
-}
-</style>
