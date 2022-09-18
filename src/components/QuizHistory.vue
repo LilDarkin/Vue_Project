@@ -25,7 +25,6 @@ import QuizDetails from "./QuizDetails.vue";
 import { database } from "../firebase";
 
 export default {
-    name: "tutorials-list",
     components: { QuizDetails: QuizDetails },
     data() {
         return {

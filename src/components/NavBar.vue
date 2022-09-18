@@ -132,8 +132,7 @@
           <v-list-item
             prepend-avatar="https://scontent.fmnl25-3.fna.fbcdn.net/v/t39.30808-6/285904537_7617205418351303_7735473882644039146_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeHIPWzc2HNBuCxZ_399GXGH6z0lwVrMu6jrPSXBWsy7qOOsr-UohG1aT3CRSwR8RgrBD_momtxa5k7KNDeMuZUX&_nc_ohc=d21oIokLXjQAX-tnyIU&tn=Ov07vvXkhUqrdXVp&_nc_ht=scontent.fmnl25-3.fna&oh=00_AT8rOHbCwHtA9iIJ0Pjsf2VjbDUWb2K5Saf6dU7J7PG5Ig&oe=6322F5D9"
             :title="user.data.displayName" :subtitle="user.data.email"><span
-              style="font-size: xx-small;">version:1.3</span></v-list-item>
-          <v-list-item prepend-icon="mdi-account" subtitle="Profile" href="/profile"></v-list-item>
+              style="font-size: xx-small;">version:3.0</span></v-list-item>
           <v-list-item prepend-icon="mdi-logout-variant" subtitle="Logout" @click.prevent="signOut" href="/">
 
           </v-list-item>

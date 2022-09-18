@@ -15,11 +15,11 @@
                 <v-text-field label="Date & Time: Finished" readonly v-model="currentHisto.timeFinished">
                 </v-text-field>
             </v-form>
-
             <div v-show="admin">
+                <v-card-text class="d-flex justify-center w-100 mb-3" justify-center>{{ message }}</v-card-text>
                 <div class="d-flex justify-space-around w-100 mb-3">
-                    <v-btn type="submit" color="success" @click="updateTutorial">Update</v-btn>
-                    <v-btn type="submit" color="error" @click="deleteTutorial">Delete</v-btn>
+                    <v-btn type="submit" color="success" @click="updateHistory">Update</v-btn>
+                    <v-btn type="submit" color="error" @click="deleteHistory">Delete</v-btn>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@ export default {
         },
     },
     methods: {
-        updateTutorial() {
+        updateHistory() {
             const data = {
                 averageScore: this.currentHisto.averageScore,
                 timeTaken: this.currentHisto.timeTaken,
@@ -72,7 +72,7 @@ export default {
             if (this.admin) {
                 DataService.update(this.currentHisto.userID, this.currentHisto.key, data)
                     .then(() => {
-                        this.message = "The tutorial was updated successfully!";
+                        this.message = "The History was updated successfully!";
                     })
                     .catch((e) => {
                         console.log(e);
@@ -80,7 +80,7 @@ export default {
             } else {
                 DataService.update("0", this.currentHisto.key, data)
                     .then(() => {
-                        this.message = "The tutorial was updated successfully!";
+                        this.message = "The History was updated successfully!";
                     })
                     .catch((e) => {
                         console.log(e);
@@ -88,8 +88,8 @@ export default {
             }
 
         },
-        deleteTutorial() {
-            DataService.delete(this.currentHisto.key)
+        deleteHistory() {
+            DataService.delete(this.currentHisto.userID, this.currentHisto.key)
                 .then(() => {
                     this.$emit("refreshList");
                 })

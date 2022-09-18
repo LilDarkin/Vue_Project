@@ -57,11 +57,7 @@ class DataService {
   }
 
   delete(userID, key) {
-    if (userID == "0") {
-      return dbRef.child(key).remove();
-    } else {
-      return dbRef.child(userID).child("History").child(key).remove();
-    }
+    return dbRef.child(userID).child("History").child(key).remove();
   }
 
   deleteAll() {
