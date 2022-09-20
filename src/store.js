@@ -1,6 +1,8 @@
 import { createStore } from "vuex";
 import { auth } from "./firebase";
 import { database } from "./firebase";
+import firebase from "firebase/compat";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -30,18 +32,44 @@ const store = createStore({
     },
   },
   actions: {
-    async register(context, { email, password, name }) {
+    async register(context, { email, password, name, imageData }) {
       const response = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       if (response) {
-
         const dbRef = database.ref("Users");
-        dbRef.child(response.user.uid).child("User Information").child("Admin").set(false);
-        dbRef.child(response.user.uid).child("User Information").child("Username").set(name);
-        dbRef.child(response.user.uid).child("User Information").child("Email").set(email);
+        dbRef
+          .child(response.user.uid)
+          .child("User Information")
+          .child("Admin")
+          .set(false);
+        dbRef
+          .child(response.user.uid)
+          .child("User Information")
+          .child("Username")
+          .set(name);
+        dbRef
+          .child(response.user.uid)
+          .child("User Information")
+          .child("Email")
+          .set(email);
+
+        const storageRef = firebase
+          .storage()
+          .ref("Users/" + response.user.uid + "/Profile")
+          .put(imageData);
+
+        storageRef.on(`state_changed`, () => {
+          storageRef.snapshot.ref.getDownloadURL().then((url) => {
+            dbRef
+              .child(response.user.uid)
+              .child("User Information")
+              .child("profilePath")
+              .set(url);
+          });
+        });
 
         context.commit("SET_USER", response.user);
         await updateProfile(response.user, {

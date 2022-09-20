@@ -299,15 +299,6 @@ export default {
                 });
         },
 
-        newHistory() {
-            this.submitted = false;
-            this.History = {
-                averageScore: 0,
-                timeTaken: "",
-                timeFinished: "",
-            };
-        },
-
         playSound() {
             if (this.playingSound) {
                 audio.pause();

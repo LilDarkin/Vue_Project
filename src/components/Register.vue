@@ -34,8 +34,18 @@
                             class="mt-3"></v-text-field>
 
                         <v-divider class="mx-4"></v-divider>
+                        <v-text-field type="file" label="Profile Picture" required @change="onFileChanged($event)" accept="image/*">
+                        </v-text-field>
+
+                        <v-divider class="mx-4"></v-divider>
+                        <v-card max-width="250" id="rounded-card">
+                            <v-img :src="imgUrl"></v-img>
+                        </v-card>
+
+
+                        <v-divider class="mx-4"></v-divider>
                         <div class="d-flex justify-center w-100">
-                            <v-btn type="submit" color="blue-grey" >Register</v-btn>
+                            <v-btn type="submit" color="blue-grey">Register</v-btn>
                         </div>
 
                     </form>
@@ -77,6 +87,9 @@ export default {
                 value === password.value || 'The password confirmation does not match.',
         ],
     }),
+    methods: {
+
+    },
     name: "RegisterComponent",
     setup() {
         const Image = ImageSrc;
@@ -86,9 +99,20 @@ export default {
         const password = ref('')
         const confirmPass = ref('')
         const error = ref(null)
-
         const store = useStore()
         const router = useRouter()
+        const file = ref(File)
+        const imgUrl = ref('https://images.getpng.net/uploads/preview/instagram-social-network-app-interface-icons-smartphone-frame-screen-template27-1151637511568djfdvfkdob.webp')
+
+        function onFileChanged($event) {
+            const target = $event.target
+            if (target && target.files) {
+                file.value = target.files[0];
+                imgUrl.value = URL.createObjectURL(file.value)
+            } else {
+                imgUrl.value = 'https://images.getpng.net/uploads/preview/instagram-social-network-app-interface-icons-smartphone-frame-screen-template27-1151637511568djfdvfkdob.webp'
+            }
+        }
 
         const Register = async () => {
             try {
@@ -96,7 +120,8 @@ export default {
                     await store.dispatch('register', {
                         email: email.value,
                         password: password.value,
-                        name: name.value
+                        name: name.value,
+                        imageData: file.value,
                     })
                     router.push('/')
                 } else {
@@ -104,11 +129,19 @@ export default {
                 }
             }
             catch (err) {
-                error.value = "The email is already taken"
+                error.value = err
             }
         }
 
-        return { Image, Register, name, email, password, confirmPass, error }
+        return { Image, Register, name, email, password, confirmPass, error, onFileChanged, imgUrl }
     }
 };
 </script>
+
+<style>
+#rounded-card {
+    border-radius: 50%;
+    min-height: 300px;
+    min-width: 300px;
+}
+</style>
