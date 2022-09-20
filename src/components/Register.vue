@@ -14,6 +14,16 @@
                     <div v-if="error" class="alert alert-danger">{{error}}</div>
                     <form action="#" @submit.prevent="Register">
 
+                        <v-divider class="mx-4"></v-divider>
+                        <div class="d-flex w-100 justify-center">
+                            <v-img max-width="100" id="rounded-card" :src="imgUrl"></v-img>
+                        </div>
+
+                        <v-divider class="mx-4"></v-divider>
+                        <v-file-input accept="image/png, image/jpeg, image/bmp" required @change="onFileChanged($event)"
+                            prepend-icon="mdi-camera" label="Avatar">
+                        </v-file-input>
+
                         <v-text-field label="Name" id="name" :rules="usernameRules" type="text" name="name" required
                             v-model="name" class="mt-3"></v-text-field>
 
@@ -32,16 +42,6 @@
                         <v-text-field prepend-icon="" :rules="confirmPassRules" label="Confirm Password"
                             id="confirmPass" type="password" name="confirmPass" required v-model="confirmPass"
                             class="mt-3"></v-text-field>
-
-                        <v-divider class="mx-4"></v-divider>
-                        <v-text-field type="file" label="Profile Picture" required @change="onFileChanged($event)" accept="image/*">
-                        </v-text-field>
-
-                        <v-divider class="mx-4"></v-divider>
-                        <v-card max-width="250" id="rounded-card">
-                            <v-img :src="imgUrl"></v-img>
-                        </v-card>
-
 
                         <v-divider class="mx-4"></v-divider>
                         <div class="d-flex justify-center w-100">
@@ -140,8 +140,9 @@ export default {
 
 <style>
 #rounded-card {
+    text-align: center;
     border-radius: 50%;
-    min-height: 300px;
-    min-width: 300px;
+    max-height: 100%;
+    max-width: 100%;
 }
 </style>
